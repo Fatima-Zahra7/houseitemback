@@ -70,18 +70,7 @@ public class ItemService {
     }
 
     public List<Item> getItemsByIdHouse(Long id_house){ // a faire
-    	House house = new House();
-    	List <Item> listeItemByHouse = new ArrayList<Item>();
-    	
-    	house.setId_house(id_house);
-    	
-    	for (Item item : listeItemByHouse) {
-    		if(item.getHouse().getId_house() == house.getId_house()) {
-    			this.itemRepository.save(item);
-    			listeItemByHouse.add(item);
-    		}
-    	}
-        return listeItemByHouse;
+    	return this.houseRepository.findByHouseId(id_house).getItem();
     }
 
     public boolean generateShoppingList(Long id_house, Long id_shopping){
@@ -125,26 +114,42 @@ public class ItemService {
         return true;
     }
 
-    public boolean removeOneItem(Long id_item){
+    public boolean removeOneItem(Long id_item){//par rapport a la quantité
     	
-    	
-    	if(this.itemRepository.getById(id_item) == null ) { //verification de l'id
+    	Item item = this.itemRepository.findByItemId(id_item);
+		item.setId_item(id_item);
+		
+    	int quantite =item.getQuantity();
+    	if(quantite>0) {
+    		item.setQuantity(quantite-1);
+    		this.itemRepository.save(item);
+    		return true;
+    	}
+    	else{
+    		this.removeItem(id_item);
     		return false;
     	}
-    	else {
-    		Item item = new Item();
-    		item.setId_item(id_item);
-    		this.itemRepository.save(item);
-    		this.itemRepository.delete(item);
-    	}
-        return true;
     }
 
     public boolean addOneItem(Long id_item){
-        return false;
+    	
+    	if(this.itemRepository.findById(id_item) != null) {
+    		
+    		Item item = this.itemRepository.findByItemId(id_item);
+    		item.setId_item(id_item);
+    	
+    		int quantite = item.getQuantity();
+        	item.setQuantity(quantite+1);
+        	
+        	this.itemRepository.save(item);
+            return true;
+    	}
+    	return false;
     }
 
     public boolean removeItem(Long id_item){
-        return false;
+    	this.itemRepository.deleteById(id_item);
+    	return true;
+
     }
 }

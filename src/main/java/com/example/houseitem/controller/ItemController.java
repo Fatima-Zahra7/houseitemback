@@ -37,6 +37,11 @@ public class ItemController {
     public ResponseEntity<Boolean> addItemInShoppingListType(@RequestBody ItemDto itemDto){
         return ResponseEntity.ok(this.itemService.addItemInShoppingListType(itemDto));
     }
+    
+    @PostMapping(value = "/item/shopping/type/addOne")
+    public ResponseEntity<Boolean> addOneItem(@PathVariable Long id_item){
+       return ResponseEntity.ok(this.itemService.addOneItem(id_item));
+    }
 
     @PostMapping(value = "/item/shopping/add/{id_house}/{id_shopping}")
     public ResponseEntity<Boolean> addItemGenerateInShoppingList(@PathVariable Long id_house, @PathVariable Long id_shopping){
@@ -48,5 +53,14 @@ public class ItemController {
         return ResponseEntity.ok(this.itemService.getItemsByIdHouse(id_house));
     }
 
+    @PostMapping(value = "/item/shopping/type/remove")
+    public ResponseEntity<Boolean> removeItem(@PathVariable Long id_item){
+        return ResponseEntity.ok(this.itemService.removeItem(id_item));
+    }
+    
+    @PostMapping(value = "/item/shopping/type/removeOne")
+    public ResponseEntity<Boolean> removeOneItem(@PathVariable Long id_item){
+        return ResponseEntity.ok(this.itemService.removeOneItem(id_item));
+    }
 
 }
