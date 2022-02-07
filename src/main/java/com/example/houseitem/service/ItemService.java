@@ -69,8 +69,18 @@ public class ItemService {
         return this.houseRepository.findByHouseId(id_house).getShoppingType().getItem();
     }
 
-    public List<Item> getItemsByIdHouse(Long id_house){
-        return null;
+    public List<Item> getItemsByIdHouse(Long id_house){ // a faire
+    	House house = new House();
+    	List <Item> listeItemByHouse = new ArrayList<Item>();
+    	
+    	house.setId_house(id_house);
+    	
+    	for (Item item : listeItemByHouse) {
+    		if(item.getHouse().getId_house() == house.getId_house()) {
+    			listeItemByHouse.add(item);
+    		}
+    	}
+        return listeItemByHouse;
     }
 
     public boolean generateShoppingList(Long id_house, Long id_shopping){
@@ -115,7 +125,15 @@ public class ItemService {
     }
 
     public boolean removeOneItem(Long id_item){
-        return false;
+    	
+    	
+    	if(this.itemRepository.getById(id_item) == null ) { //verification de l'id
+    		return false;
+    	}
+    	else {
+    		this.itemRepository.deleteById(id_item);
+    	}
+        return true;
     }
 
     public boolean addOneItem(Long id_item){
