@@ -77,6 +77,7 @@ public class ItemService {
     	
     	for (Item item : listeItemByHouse) {
     		if(item.getHouse().getId_house() == house.getId_house()) {
+    			this.itemRepository.save(item);
     			listeItemByHouse.add(item);
     		}
     	}
@@ -131,7 +132,10 @@ public class ItemService {
     		return false;
     	}
     	else {
-    		this.itemRepository.deleteById(id_item);
+    		Item item = new Item();
+    		item.setId_item(id_item);
+    		this.itemRepository.save(item);
+    		this.itemRepository.delete(item);
     	}
         return true;
     }
